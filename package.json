@@ -1,0 +1,24 @@
+{
+  "name": "alumni-portal-monorepo",
+  "version": "1.0.0",
+  "description": "Full-stack MERN Alumni Management Portal",
+  "scripts": {
+    "server": "npm --prefix server start",
+    "client": "npm --prefix client run dev",
+    "seed": "npm --prefix server run seed",
+    "docs": "node docs/generate-pdf.js",
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dev": "npx --yes concurrently -n \"server,client\" -c \"blue,green\" \"npm --prefix server start\" \"npm --prefix client run dev\""
+  },
+  "keywords": [
+    "mern",
+    "mongodb",
+    "express",
+    "react",
+    "nodejs",
+    "alumni-management"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+

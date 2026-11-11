@@ -1,0 +1,41 @@
+import axios from 'axios';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Request interceptor to automatically add authorization header
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('alumni_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor to handle common errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // If unauthorized, clear token if stored
+      const currentToken = localStorage.getItem('alumni_token');
+      if (currentToken) {
+        localStorage.removeItem('alumni_token');
+        localStorage.removeItem('alumni_user');
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default api;
+
